@@ -44,7 +44,6 @@ def large_contig_subsum1(arr)
   sum_arr = []
   sub_arrs.each do | sub_arr |
     sum_arr << sub_arr.reduce(:+)
-      p Time.now
   end
 
   max = sum_arr.max
@@ -53,18 +52,20 @@ def large_contig_subsum1(arr)
 end
 
 # 0.02 for n == 6
+# O(n!)
 def large_contig_subsum2(arr)
   timestart = Time.now
-  max_sum = arr[0] + arr[1]
-  arr[0...-1].each_index do | idx |
-    p Time.now
-    cur_el = arr[idx]
-    j = idx + 1
-    while j < arr.length
-      sub_sum = arr[idx..j].reduce(:+)
-      max_sum = sub_sum if sub_sum > max_sum
-      j += 1
+  max_sum = 0
+  curr_sum = 0
+  i = 0
+  while i < arr.length
+    if arr[i] + curr_sum > 0
+      curr_sum += arr[i]
+      max_sum = curr_sum if curr_sum > max_sum
+    else
+      curr_sum = 0
     end
+    i += 1
   end
 
   p (Time.now - timestart) * 1000
